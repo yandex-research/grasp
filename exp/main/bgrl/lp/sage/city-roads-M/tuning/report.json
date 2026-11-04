@@ -1,0 +1,192 @@
+{
+    "function": "bin.tune.main",
+    "gpus": [
+        "NVIDIA A100-SXM4-80GB"
+    ],
+    "config": {
+        "seed": 0,
+        "function": "bin.gnn.main",
+        "n_trials": 100,
+        "sampler_type": "TPESampler",
+        "sampler": {
+            "n_startup_trials": 20
+        },
+        "space": {
+            "seed": 0,
+            "synthetic_data": false,
+            "amp_dtype": "float16",
+            "data": {
+                "cache": false,
+                "path": "data/city-roads-M",
+                "setting": "transductive",
+                "add_self_loops": false,
+                "num_policy": "standard",
+                "ratio_policy": "none",
+                "cat_policy": "one-hot",
+                "internal_split_name": "RL"
+            },
+            "model": {
+                "inp_out_type": "linear",
+                "backbone": {
+                    "type": "BaseGraphBackbone",
+                    "conv_name": "sage",
+                    "norm_name": "layer",
+                    "residual": true,
+                    "n_layers": [
+                        "_tune_",
+                        "int",
+                        1,
+                        5
+                    ],
+                    "d_hidden": [
+                        "_tune_",
+                        "int",
+                        64,
+                        512,
+                        64
+                    ],
+                    "dropout": [
+                        "_tune_",
+                        "discrete_uniform",
+                        0.0,
+                        0.5,
+                        0.1
+                    ],
+                    "activation": "relu"
+                }
+            },
+            "pretrain": {
+                "method": "bgrl",
+                "max_steps": 25000,
+                "patience": 100,
+                "epoch_size": 100,
+                "params": {
+                    "p_drop_edge_first": [
+                        "_tune_",
+                        "discrete_uniform",
+                        0.0,
+                        0.8,
+                        0.1
+                    ],
+                    "p_drop_edge_second": [
+                        "_tune_",
+                        "discrete_uniform",
+                        0.0,
+                        0.8,
+                        0.1
+                    ],
+                    "p_mask_feat_first": [
+                        "_tune_",
+                        "discrete_uniform",
+                        0.0,
+                        0.8,
+                        0.1
+                    ],
+                    "p_mask_feat_second": [
+                        "_tune_",
+                        "discrete_uniform",
+                        0.0,
+                        0.8,
+                        0.1
+                    ],
+                    "ema_decay": [
+                        "_tune_",
+                        "loguniform",
+                        0.98,
+                        0.999
+                    ]
+                },
+                "optimizer": {
+                    "type": "AdamW",
+                    "lr": [
+                        "_tune_",
+                        "loguniform",
+                        0.0001,
+                        0.02
+                    ],
+                    "weight_decay": 0.0
+                }
+            }
+        }
+    },
+    "best": {
+        "function": "bin.gnn.main",
+        "gpus": [
+            "NVIDIA A100-SXM4-80GB"
+        ],
+        "config": {
+            "seed": 92,
+            "synthetic_data": false,
+            "amp_dtype": "float16",
+            "data": {
+                "cache": false,
+                "path": "data/city-roads-M",
+                "setting": "transductive",
+                "add_self_loops": false,
+                "num_policy": "standard",
+                "ratio_policy": "none",
+                "cat_policy": "one-hot",
+                "internal_split_name": "RL"
+            },
+            "model": {
+                "inp_out_type": "linear",
+                "backbone": {
+                    "type": "BaseGraphBackbone",
+                    "conv_name": "sage",
+                    "norm_name": "layer",
+                    "residual": true,
+                    "n_layers": 5,
+                    "d_hidden": 512,
+                    "dropout": 0.2,
+                    "activation": "relu"
+                }
+            },
+            "pretrain": {
+                "method": "bgrl",
+                "max_steps": 25000,
+                "patience": 100,
+                "epoch_size": 100,
+                "params": {
+                    "p_drop_edge_first": 0.8,
+                    "p_drop_edge_second": 0.0,
+                    "p_mask_feat_first": 0.7000000000000001,
+                    "p_mask_feat_second": 0.6000000000000001,
+                    "ema_decay": 0.9892756378026127
+                },
+                "optimizer": {
+                    "type": "AdamW",
+                    "lr": 0.00011149341233771405,
+                    "weight_decay": 0.0
+                }
+            }
+        },
+        "n_parameters": 3978241,
+        "prediction_type": "labels",
+        "best_step": 4200,
+        "metrics": {
+            "train": {
+                "rmse": 2.6583569503786584,
+                "mae": 2.0376452391322117,
+                "r2": 0.6219806062516064,
+                "score": 0.6219806062516064
+            },
+            "val": {
+                "rmse": 2.758071232932519,
+                "mae": 2.1084433996439023,
+                "r2": 0.5875813520307951,
+                "score": 0.5875813520307951
+            },
+            "test": {
+                "rmse": 2.8478620554049074,
+                "mae": 2.1683651793013916,
+                "r2": 0.5690154185608831,
+                "score": 0.5690154185608831
+            }
+        },
+        "time": 2528.755972553976,
+        "trial_id": 92,
+        "tuning_time": "1 day, 16:07:28.064002"
+    },
+    "time": 157337.87104504905,
+    "n_completed_trials": 100
+}

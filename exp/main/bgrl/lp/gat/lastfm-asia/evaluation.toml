@@ -1,0 +1,45 @@
+function = "bin.gnn.main"
+n_seeds = 10
+
+[base_config]
+synthetic_data = false
+amp_dtype = "float16"
+
+[base_config.data]
+cache = false
+path = "data/lastfm-asia"
+setting = "transductive"
+add_self_loops = true
+num_policy = "none"
+external_split = true
+
+[base_config.model]
+inp_out_type = "linear"
+
+[base_config.model.backbone]
+type = "BaseGraphBackbone"
+conv_name = "gat-sep"
+norm_name = "layer"
+residual = true
+n_layers = 4
+d_hidden = 256
+dropout = 0.0
+activation = "relu"
+
+[base_config.pretrain]
+method = "bgrl"
+max_steps = 25000
+patience = 100
+epoch_size = 100
+
+[base_config.pretrain.params]
+p_drop_edge_first = 0.30000000000000004
+p_drop_edge_second = 0.30000000000000004
+p_mask_feat_first = 0.7000000000000001
+p_mask_feat_second = 0.4
+ema_decay = 0.981462538440663
+
+[base_config.pretrain.optimizer]
+type = "AdamW"
+lr = 0.0008154825367688418
+weight_decay = 0.0

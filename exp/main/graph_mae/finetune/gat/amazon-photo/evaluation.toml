@@ -1,0 +1,53 @@
+function = "bin.gnn.main"
+n_seeds = 10
+
+[base_config]
+synthetic_data = false
+amp_dtype = "float16"
+
+[base_config.data]
+cache = false
+path = "data/amazon-photo"
+setting = "transductive"
+add_self_loops = true
+num_policy = "none"
+external_split = true
+
+[base_config.model]
+inp_out_type = "linear"
+
+[base_config.model.backbone]
+type = "BaseGraphBackbone"
+conv_name = "gat-sep"
+norm_name = "layer"
+residual = true
+n_layers = 5
+d_hidden = 64
+dropout = 0.5
+activation = "relu"
+
+[base_config.pretrain]
+method = "graph_mae"
+max_steps = 25000
+patience = 100
+epoch_size = 100
+
+[base_config.pretrain.params]
+p_mask_feat = 0.9
+p_replace = 0.55
+scaling_factor = 1.5
+
+[base_config.pretrain.optimizer]
+type = "AdamW"
+lr = 0.0002966724009237879
+weight_decay = 0.0
+
+[base_config.finetune]
+max_steps = 2500
+patience = 100
+epoch_size = 10
+
+[base_config.finetune.optimizer]
+type = "AdamW"
+lr = 0.0017328617591732638
+weight_decay = 0.0

@@ -1,0 +1,56 @@
+function = "bin.gnn.main"
+n_seeds = 10
+
+[base_config]
+synthetic_data = false
+amp_dtype = "float16"
+
+[base_config.data]
+cache = false
+path = "data/tolokers-2"
+setting = "transductive"
+add_self_loops = false
+num_policy = "noisy-quantile-normal"
+ratio_policy = "none"
+cat_policy = "one-hot"
+internal_split_name = "RL"
+
+[base_config.model]
+inp_out_type = "linear"
+
+[base_config.model.backbone]
+type = "BaseGraphBackbone"
+conv_name = "sage"
+norm_name = "layer"
+residual = true
+n_layers = 2
+d_hidden = 320
+dropout = 0.5
+activation = "relu"
+
+[base_config.pretrain]
+method = "mask_gae"
+max_steps = 25000
+patience = 100
+epoch_size = 100
+
+[base_config.pretrain.params]
+p_anchor = 0.30000000000000004
+n_walks_per_anchor = 2
+walk_len = 7
+coef_degree = 1.9522261024054727e-05
+
+[base_config.pretrain.optimizer]
+type = "AdamW"
+lr = 0.0024840717703735276
+weight_decay = 0.0
+
+[base_config.finetune]
+max_steps = 2500
+patience = 100
+epoch_size = 10
+
+[base_config.finetune.optimizer]
+type = "AdamW"
+lr = 0.0017268441099257239
+weight_decay = 0.0

@@ -1,0 +1,219 @@
+{
+    "function": "bin.tune.main",
+    "gpus": [
+        "NVIDIA A100-SXM4-80GB"
+    ],
+    "config": {
+        "seed": 0,
+        "function": "bin.gnn.main",
+        "n_trials": 100,
+        "sampler_type": "TPESampler",
+        "sampler": {
+            "n_startup_trials": 20
+        },
+        "space": {
+            "seed": 0,
+            "synthetic_data": false,
+            "amp_dtype": "float16",
+            "data": {
+                "cache": false,
+                "path": "data/artnet-views",
+                "setting": "transductive",
+                "add_self_loops": true,
+                "num_policy": "none",
+                "ratio_policy": "noisy-quantile-normal",
+                "cat_policy": "one-hot",
+                "internal_split_name": "RL"
+            },
+            "model": {
+                "inp_out_type": "linear",
+                "backbone": {
+                    "type": "BaseGraphBackbone",
+                    "conv_name": "gt-sep",
+                    "norm_name": "layer",
+                    "residual": true,
+                    "n_layers": [
+                        "_tune_",
+                        "int",
+                        1,
+                        5
+                    ],
+                    "d_hidden": [
+                        "_tune_",
+                        "int",
+                        64,
+                        512,
+                        64
+                    ],
+                    "dropout": [
+                        "_tune_",
+                        "discrete_uniform",
+                        0.0,
+                        0.5,
+                        0.1
+                    ],
+                    "activation": "relu"
+                }
+            },
+            "pretrain": {
+                "method": "grasp_naive",
+                "max_steps": 25000,
+                "patience": 100,
+                "epoch_size": 100,
+                "params": {
+                    "coef_degree": [
+                        "_tune_",
+                        "loguniform",
+                        1e-05,
+                        0.1
+                    ],
+                    "coef_feat": [
+                        "_tune_",
+                        "loguniform",
+                        0.1,
+                        10.0
+                    ],
+                    "edge_config": {
+                        "sampler": "edge",
+                        "sampler_params": {
+                            "p": [
+                                "_tune_",
+                                "discrete_uniform",
+                                0.2,
+                                0.8,
+                                0.1
+                            ]
+                        }
+                    },
+                    "feat_config": {
+                        "type": "graph_mae",
+                        "params": {
+                            "p_mask_feat": [
+                                "_tune_",
+                                "discrete_uniform",
+                                0.5,
+                                0.9,
+                                0.05
+                            ],
+                            "p_replace": [
+                                "_tune_",
+                                "discrete_uniform",
+                                0.0,
+                                1.0,
+                                0.05
+                            ],
+                            "scaling_factor": [
+                                "_tune_",
+                                "discrete_uniform",
+                                1.0,
+                                4.0,
+                                0.5
+                            ]
+                        }
+                    }
+                },
+                "optimizer": {
+                    "type": "AdamW",
+                    "lr": [
+                        "_tune_",
+                        "loguniform",
+                        0.0001,
+                        0.02
+                    ],
+                    "weight_decay": 0.0
+                }
+            }
+        }
+    },
+    "best": {
+        "function": "bin.gnn.main",
+        "gpus": [
+            "NVIDIA A100-SXM4-80GB"
+        ],
+        "config": {
+            "seed": 82,
+            "synthetic_data": false,
+            "amp_dtype": "float16",
+            "data": {
+                "cache": false,
+                "path": "data/artnet-views",
+                "setting": "transductive",
+                "add_self_loops": true,
+                "num_policy": "none",
+                "ratio_policy": "noisy-quantile-normal",
+                "cat_policy": "one-hot",
+                "internal_split_name": "RL"
+            },
+            "model": {
+                "inp_out_type": "linear",
+                "backbone": {
+                    "type": "BaseGraphBackbone",
+                    "conv_name": "gt-sep",
+                    "norm_name": "layer",
+                    "residual": true,
+                    "n_layers": 5,
+                    "d_hidden": 512,
+                    "dropout": 0.4,
+                    "activation": "relu"
+                }
+            },
+            "pretrain": {
+                "method": "grasp_naive",
+                "max_steps": 25000,
+                "patience": 100,
+                "epoch_size": 100,
+                "params": {
+                    "coef_degree": 0.011240599276201916,
+                    "coef_feat": 0.272328530539291,
+                    "edge_config": {
+                        "sampler": "edge",
+                        "sampler_params": {
+                            "p": 0.30000000000000004
+                        }
+                    },
+                    "feat_config": {
+                        "type": "graph_mae",
+                        "params": {
+                            "p_mask_feat": 0.7,
+                            "p_replace": 0.0,
+                            "scaling_factor": 1.0
+                        }
+                    }
+                },
+                "optimizer": {
+                    "type": "AdamW",
+                    "lr": 0.00017105334064315022,
+                    "weight_decay": 0.0
+                }
+            }
+        },
+        "n_parameters": 9228289,
+        "prediction_type": "labels",
+        "best_step": 23400,
+        "metrics": {
+            "train": {
+                "rmse": 1.0053404200652598,
+                "mae": 0.7924282677533425,
+                "r2": 0.6562229881713375,
+                "score": 0.6562229881713375
+            },
+            "val": {
+                "rmse": 1.0481850573168692,
+                "mae": 0.8218199007879183,
+                "r2": 0.6236234589681897,
+                "score": 0.6236234589681897
+            },
+            "test": {
+                "rmse": 1.0585438163057272,
+                "mae": 0.8307019315279598,
+                "r2": 0.6154262951440927,
+                "score": 0.6154262951440927
+            }
+        },
+        "time": 4412.006267258897,
+        "trial_id": 82,
+        "tuning_time": "2 days, 8:39:00.997554"
+    },
+    "time": 271686.9466103539,
+    "n_completed_trials": 100
+}

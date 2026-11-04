@@ -1,0 +1,46 @@
+function = "bin.gnn.main"
+n_seeds = 10
+
+[base_config]
+synthetic_data = false
+amp_dtype = "float16"
+
+[base_config.data]
+cache = false
+path = "data/city-roads-M"
+setting = "transductive"
+add_self_loops = true
+num_policy = "standard"
+ratio_policy = "none"
+cat_policy = "one-hot"
+internal_split_name = "RL"
+
+[base_config.model]
+inp_out_type = "linear"
+
+[base_config.model.backbone]
+type = "BaseGraphBackbone"
+conv_name = "gt-sep"
+norm_name = "layer"
+residual = true
+n_layers = 4
+d_hidden = 512
+dropout = 0.1
+activation = "relu"
+
+[base_config.pretrain]
+method = "grasp"
+max_steps = 25000
+patience = 100
+epoch_size = 100
+
+[base_config.pretrain.params]
+p_corrupt_feat = 0.4
+p_mask_edge = 0.2
+coef_degree = 0.023084211413599825
+coef_feat = 3.8748418298643057
+
+[base_config.pretrain.optimizer]
+type = "AdamW"
+lr = 0.0008633735356698037
+weight_decay = 0.0

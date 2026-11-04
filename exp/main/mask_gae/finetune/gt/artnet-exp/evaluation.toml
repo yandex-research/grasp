@@ -1,0 +1,56 @@
+function = "bin.gnn.main"
+n_seeds = 10
+
+[base_config]
+synthetic_data = false
+amp_dtype = "float16"
+
+[base_config.data]
+cache = false
+path = "data/artnet-exp"
+setting = "transductive"
+add_self_loops = true
+num_policy = "noisy-quantile-normal"
+ratio_policy = "none"
+cat_policy = "one-hot"
+internal_split_name = "RL"
+
+[base_config.model]
+inp_out_type = "linear"
+
+[base_config.model.backbone]
+type = "BaseGraphBackbone"
+conv_name = "gt-sep"
+norm_name = "layer"
+residual = true
+n_layers = 5
+d_hidden = 384
+dropout = 0.4
+activation = "relu"
+
+[base_config.pretrain]
+method = "mask_gae"
+max_steps = 25000
+patience = 100
+epoch_size = 100
+
+[base_config.pretrain.params]
+p_anchor = 0.5
+n_walks_per_anchor = 4
+walk_len = 6
+coef_degree = 0.0017231623985737416
+
+[base_config.pretrain.optimizer]
+type = "AdamW"
+lr = 0.00019898699813429154
+weight_decay = 0.0
+
+[base_config.finetune]
+max_steps = 2500
+patience = 100
+epoch_size = 10
+
+[base_config.finetune.optimizer]
+type = "AdamW"
+lr = 0.00018376006854375516
+weight_decay = 0.0

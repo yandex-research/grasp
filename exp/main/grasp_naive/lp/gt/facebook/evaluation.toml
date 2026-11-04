@@ -1,0 +1,58 @@
+function = "bin.gnn.main"
+n_seeds = 10
+
+[base_config]
+synthetic_data = false
+amp_dtype = "float16"
+
+[base_config.data]
+cache = false
+path = "data/facebook"
+setting = "transductive"
+add_self_loops = true
+num_policy = "none"
+external_split = true
+
+[base_config.model]
+inp_out_type = "linear"
+
+[base_config.model.backbone]
+type = "BaseGraphBackbone"
+conv_name = "gt-sep"
+norm_name = "layer"
+residual = true
+n_layers = 5
+d_hidden = 384
+dropout = 0.2
+activation = "relu"
+
+[base_config.pretrain]
+method = "grasp_naive"
+max_steps = 25000
+patience = 100
+epoch_size = 100
+
+[base_config.pretrain.params]
+coef_degree = 0.0012437317314803985
+coef_feat = 0.8973180675069669
+
+[base_config.pretrain.params.edge_config]
+sampler = "path"
+
+[base_config.pretrain.params.edge_config.sampler_params]
+p_anchor = 0.5
+n_walks_per_anchor = 2
+walk_len = 7
+
+[base_config.pretrain.params.feat_config]
+type = "graph_mae"
+
+[base_config.pretrain.params.feat_config.params]
+p_mask_feat = 0.65
+p_replace = 0.25
+scaling_factor = 3.0
+
+[base_config.pretrain.optimizer]
+type = "AdamW"
+lr = 0.00022214687033557807
+weight_decay = 0.0

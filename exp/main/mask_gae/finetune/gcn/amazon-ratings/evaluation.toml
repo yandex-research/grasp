@@ -1,0 +1,54 @@
+function = "bin.gnn.main"
+n_seeds = 10
+
+[base_config]
+synthetic_data = false
+amp_dtype = "float16"
+
+[base_config.data]
+cache = false
+path = "data/amazon-ratings"
+setting = "transductive"
+add_self_loops = false
+num_policy = "standard"
+external_split = true
+
+[base_config.model]
+inp_out_type = "linear"
+
+[base_config.model.backbone]
+type = "BaseGraphBackbone"
+conv_name = "gcn-sep"
+norm_name = "layer"
+residual = true
+n_layers = 3
+d_hidden = 448
+dropout = 0.4
+activation = "relu"
+
+[base_config.pretrain]
+method = "mask_gae"
+max_steps = 25000
+patience = 100
+epoch_size = 100
+
+[base_config.pretrain.params]
+p_anchor = 0.8
+n_walks_per_anchor = 2
+walk_len = 8
+coef_degree = 9.875769962551546e-05
+
+[base_config.pretrain.optimizer]
+type = "AdamW"
+lr = 0.0031025735483870376
+weight_decay = 0.0
+
+[base_config.finetune]
+max_steps = 2500
+patience = 100
+epoch_size = 10
+
+[base_config.finetune.optimizer]
+type = "AdamW"
+lr = 0.0021981668347368297
+weight_decay = 0.0

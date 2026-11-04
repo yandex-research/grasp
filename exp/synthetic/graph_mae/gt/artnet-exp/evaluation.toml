@@ -1,0 +1,51 @@
+function = "bin.gnn.main"
+n_seeds = 10
+
+[base_config]
+synthetic_data = true
+amp_dtype = "float16"
+
+[base_config.data]
+cache = false
+path = "data/artnet-exp"
+setting = "transductive"
+add_self_loops = true
+num_policy = "noisy-quantile-normal"
+ratio_policy = "none"
+cat_policy = "one-hot"
+internal_split_name = "RL"
+
+[base_config.model]
+inp_out_type = "linear"
+
+[base_config.model.backbone]
+type = "BaseGraphBackbone"
+conv_name = "gt-sep"
+norm_name = "layer"
+residual = true
+n_layers = 3
+d_hidden = 256
+dropout = 0.1
+activation = "relu"
+
+[base_config.pretrain]
+method = "graph_mae"
+max_steps = 2500
+patience = 1
+epoch_size = 2500
+
+[base_config.pretrain.params]
+p_mask_feat = 0.5
+p_replace = 0.2
+scaling_factor = 3
+
+[base_config.pretrain.optimizer]
+type = "AdamW"
+lr = 0.0003
+weight_decay = 0.0
+
+[base_config.analysis]
+targets = [
+    "features",
+    "edges",
+]

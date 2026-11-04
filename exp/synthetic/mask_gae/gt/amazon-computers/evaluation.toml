@@ -1,0 +1,50 @@
+function = "bin.gnn.main"
+n_seeds = 10
+
+[base_config]
+synthetic_data = true
+amp_dtype = "float16"
+
+[base_config.data]
+cache = false
+path = "data/amazon-computers"
+setting = "transductive"
+add_self_loops = true
+num_policy = "none"
+external_split = true
+
+[base_config.model]
+inp_out_type = "linear"
+
+[base_config.model.backbone]
+type = "BaseGraphBackbone"
+conv_name = "gt-sep"
+norm_name = "layer"
+residual = true
+n_layers = 3
+d_hidden = 256
+dropout = 0.1
+activation = "relu"
+
+[base_config.pretrain]
+method = "mask_gae"
+max_steps = 2500
+patience = 1
+epoch_size = 2500
+
+[base_config.pretrain.params]
+p_anchor = 0.5
+n_walks_per_anchor = 2
+walk_len = 4
+coef_degree = 0.0001
+
+[base_config.pretrain.optimizer]
+type = "AdamW"
+lr = 0.0003
+weight_decay = 0.0
+
+[base_config.analysis]
+targets = [
+    "features",
+    "edges",
+]

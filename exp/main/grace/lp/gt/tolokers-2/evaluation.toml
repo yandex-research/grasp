@@ -1,0 +1,48 @@
+function = "bin.gnn.main"
+n_seeds = 10
+
+[base_config]
+synthetic_data = false
+amp_dtype = "float16"
+
+[base_config.data]
+cache = false
+path = "data/tolokers-2"
+setting = "transductive"
+add_self_loops = true
+num_policy = "noisy-quantile-normal"
+ratio_policy = "none"
+cat_policy = "one-hot"
+internal_split_name = "RL"
+
+[base_config.model]
+inp_out_type = "linear"
+
+[base_config.model.backbone]
+type = "BaseGraphBackbone"
+conv_name = "gt-sep"
+norm_name = "layer"
+residual = true
+n_layers = 4
+d_hidden = 256
+dropout = 0.0
+activation = "relu"
+
+[base_config.pretrain]
+method = "grace"
+max_steps = 25000
+patience = 100
+epoch_size = 100
+
+[base_config.pretrain.params]
+p_drop_edge_first = 0.30000000000000004
+p_drop_edge_second = 0.5
+p_mask_feat_first = 0.5
+p_mask_feat_second = 0.0
+temperature = 0.1767695480176166
+batch_size = 2048
+
+[base_config.pretrain.optimizer]
+type = "AdamW"
+lr = 0.00033873447938919423
+weight_decay = 0.0

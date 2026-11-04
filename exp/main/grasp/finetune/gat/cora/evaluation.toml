@@ -1,0 +1,54 @@
+function = "bin.gnn.main"
+n_seeds = 10
+
+[base_config]
+synthetic_data = false
+amp_dtype = "float16"
+
+[base_config.data]
+cache = false
+path = "data/cora"
+setting = "transductive"
+add_self_loops = true
+num_policy = "standard"
+external_split = true
+
+[base_config.model]
+inp_out_type = "linear"
+
+[base_config.model.backbone]
+type = "BaseGraphBackbone"
+conv_name = "gat-sep"
+norm_name = "layer"
+residual = true
+n_layers = 2
+d_hidden = 192
+dropout = 0.5
+activation = "relu"
+
+[base_config.pretrain]
+method = "grasp"
+max_steps = 25000
+patience = 100
+epoch_size = 100
+
+[base_config.pretrain.params]
+p_corrupt_feat = 0.4
+p_mask_edge = 0.8
+coef_degree = 8.39351356380444e-05
+coef_feat = 4.85976087213482
+
+[base_config.pretrain.optimizer]
+type = "AdamW"
+lr = 0.0022664695149554603
+weight_decay = 0.0
+
+[base_config.finetune]
+max_steps = 2500
+patience = 100
+epoch_size = 10
+
+[base_config.finetune.optimizer]
+type = "AdamW"
+lr = 0.00014547914005349406
+weight_decay = 0.0

@@ -1,0 +1,43 @@
+function = "bin.gnn.main"
+n_seeds = 10
+
+[base_config]
+synthetic_data = false
+amp_dtype = "float16"
+
+[base_config.data]
+cache = false
+path = "data/amazon-photo"
+setting = "transductive"
+add_self_loops = true
+num_policy = "none"
+external_split = true
+
+[base_config.model]
+inp_out_type = "linear"
+
+[base_config.model.backbone]
+type = "BaseGraphBackbone"
+conv_name = "gt-sep"
+norm_name = "layer"
+residual = true
+n_layers = 3
+d_hidden = 320
+dropout = 0.30000000000000004
+activation = "relu"
+
+[base_config.pretrain]
+method = "graph_mae"
+max_steps = 25000
+patience = 100
+epoch_size = 100
+
+[base_config.pretrain.params]
+p_mask_feat = 0.9
+p_replace = 0.05
+scaling_factor = 2.5
+
+[base_config.pretrain.optimizer]
+type = "AdamW"
+lr = 0.0007370838262430649
+weight_decay = 0.0

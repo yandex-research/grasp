@@ -1,0 +1,44 @@
+function = "bin.gnn.main"
+n_seeds = 10
+
+[base_config]
+synthetic_data = false
+amp_dtype = "float16"
+
+[base_config.data]
+cache = false
+path = "data/cora"
+setting = "transductive"
+add_self_loops = false
+num_policy = "none"
+external_split = true
+
+[base_config.model]
+inp_out_type = "linear"
+
+[base_config.model.backbone]
+type = "BaseGraphBackbone"
+conv_name = "sage"
+norm_name = "layer"
+residual = true
+n_layers = 2
+d_hidden = 256
+dropout = 0.4
+activation = "relu"
+
+[base_config.pretrain]
+method = "grasp"
+max_steps = 25000
+patience = 100
+epoch_size = 100
+
+[base_config.pretrain.params]
+p_corrupt_feat = 0.5
+p_mask_edge = 0.8
+coef_degree = 0.0012462862148901403
+coef_feat = 6.519712910731622
+
+[base_config.pretrain.optimizer]
+type = "AdamW"
+lr = 0.009572687383815946
+weight_decay = 0.0

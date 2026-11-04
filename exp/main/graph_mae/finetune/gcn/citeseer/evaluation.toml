@@ -1,0 +1,53 @@
+function = "bin.gnn.main"
+n_seeds = 10
+
+[base_config]
+synthetic_data = false
+amp_dtype = "float16"
+
+[base_config.data]
+cache = false
+path = "data/citeseer"
+setting = "transductive"
+add_self_loops = false
+num_policy = "none"
+external_split = true
+
+[base_config.model]
+inp_out_type = "linear"
+
+[base_config.model.backbone]
+type = "BaseGraphBackbone"
+conv_name = "gcn-sep"
+norm_name = "layer"
+residual = true
+n_layers = 3
+d_hidden = 128
+dropout = 0.5
+activation = "relu"
+
+[base_config.pretrain]
+method = "graph_mae"
+max_steps = 25000
+patience = 100
+epoch_size = 100
+
+[base_config.pretrain.params]
+p_mask_feat = 0.75
+p_replace = 0.7000000000000001
+scaling_factor = 3.0
+
+[base_config.pretrain.optimizer]
+type = "AdamW"
+lr = 0.002986844064553492
+weight_decay = 0.0
+
+[base_config.finetune]
+max_steps = 2500
+patience = 100
+epoch_size = 10
+
+[base_config.finetune.optimizer]
+type = "AdamW"
+lr = 0.00028288841608643844
+weight_decay = 0.0

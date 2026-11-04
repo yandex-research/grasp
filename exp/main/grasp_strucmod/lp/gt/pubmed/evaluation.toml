@@ -1,0 +1,56 @@
+function = "bin.gnn.main"
+n_seeds = 10
+
+[base_config]
+synthetic_data = false
+amp_dtype = "float16"
+
+[base_config.data]
+cache = false
+path = "data/pubmed"
+setting = "transductive"
+add_self_loops = true
+num_policy = "standard"
+external_split = true
+
+[base_config.model]
+inp_out_type = "linear"
+
+[base_config.model.backbone]
+type = "BaseGraphBackbone"
+conv_name = "gt-sep"
+norm_name = "layer"
+residual = true
+n_layers = 1
+d_hidden = 512
+dropout = 0.2
+activation = "relu"
+
+[base_config.pretrain]
+method = "grasp_naive"
+max_steps = 25000
+patience = 100
+epoch_size = 100
+
+[base_config.pretrain.params]
+coef_degree = 0.0003340104777629285
+coef_feat = 1.331015346364351
+
+[base_config.pretrain.params.edge_config]
+sampler = "edge"
+
+[base_config.pretrain.params.edge_config.sampler_params]
+p = 0.7
+
+[base_config.pretrain.params.feat_config]
+type = "graph_mae"
+
+[base_config.pretrain.params.feat_config.params]
+p_mask_feat = 0.65
+p_replace = 0.15000000000000002
+scaling_factor = 2.0
+
+[base_config.pretrain.optimizer]
+type = "AdamW"
+lr = 0.0006427777003161335
+weight_decay = 0.0
